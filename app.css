@@ -30,8 +30,9 @@ h1 a {
   color: #fff;
 }
 
-h1 a:hover {
-  text-decoration: underline;
+h1 img {
+  height: 56px;
+  margin-bottom: -17px;
 }
 
 .clip {
