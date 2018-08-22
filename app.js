@@ -7,10 +7,8 @@
   var forEach = Function.prototype.call.bind(unboundForEach)
 
 
-  function main(hash) {
-    bind()
-
-    var title = hash.toLowerCase().replace(/-/g, ' ').replace(/[^ \w]/g, '')
+  function changeClip() {
+    var title = location.hash.toLowerCase().replace(/-/g, ' ').replace(/[^ \w]/g, '')
     var clipTitle = document.querySelector('h2[data-title="' + title + '"]')
     var clip
 
@@ -20,18 +18,13 @@
       var video = clip.querySelector('video')
 
       if (video.readyState == video.HAVE_NOTHING) {
-        forEach(video.querySelectorAll('source'), function(source) {
-          source.src = source.getAttribute('data-src')
-        })
+        video.src = video.dataset.src
         video.addEventListener('canplay', canPlay)
         video.load()
       }
       else {
         play(video)
       }
-    }
-    else {
-      location.hash = document.querySelector('.clip h2').getAttribute('data-title').replace(/ /g, '-')
     }
   }
 
@@ -41,7 +34,7 @@
     })
 
     window.onhashchange = function() {
-      main(location.hash)
+      changeClip(location.hash)
     }
   }
 
@@ -83,10 +76,18 @@
 
     clip.style.zIndex = 10
     clip.style.opacity = 0
-    location.hash = nextClip.querySelector('h2').getAttribute('data-title').replace(/ /g, '-')
+    location.hash = nextClip.querySelector('h2').dataset.title.replace(/ /g, '-')
   }
 
+  function main() {
+    bind()
+    if (location.hash) {
+      changeClip()
+    } else {
+      location.hash = document.querySelector('.clip h2').dataset.title.replace(/ /g, '-')
+    }
+  }
 
-  main(location.hash)
+  main()
 
 })();
